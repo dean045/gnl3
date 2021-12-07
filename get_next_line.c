@@ -70,7 +70,10 @@ char	*ft_join(char *tmp, char *buf)
 	int i;
 
 	if ((!tmp || !*tmp) && buf)
+	{
+		free(tmp);
 		return (ft_strdup(buf));
+	}
 	else if (!tmp && !buf)
 		return (NULL);
 	len1 = ft_strlen(tmp);
@@ -95,15 +98,15 @@ char	*ft_substr(char *tmp, int end)
 	char	*new;
 	int		i;
 
-	if (!tmp)
+	if (!tmp || !*tmp)
 		return (NULL);
 	if (end >= ft_strlen(tmp))
 		return (NULL);
-	new = malloc(sizeof(char) * (end + 1));
+	new = malloc(sizeof(char) * (end + 2));
 	if (!new)
 		return (NULL);
 	i = -1;
-	while (++i < end)
+	while (++i <= end)
 		new[i] = tmp[i];
 	new[i] = '\0';
 	return (new);
@@ -132,23 +135,25 @@ char *get_next_line(int fd)
 		if (ret < BUFFER_SIZE)
 			break;
 	}
+	free(buf);
 	result = ft_substr(tmp, ft_get_n(tmp));
 	tmp2 = ft_strdup(tmp + ft_get_n(tmp) + 1);
 	free(tmp);
 	tmp = tmp2;
 	return(result);
 }
-
+/*
 int main()
 {
 	int		fd;
 	char *test;
 	int		r = 0;
 
-	fd = open("brams42.txt", O_RDONLY);
-	while ((test = get_next_line(fd)) != NULL)
+	fd = open("bible.txt", O_RDONLY);
+	while ((test = get_next_line(fd)))
 	{
 		printf("%s", test);
+		free(test);
 		r++;
 	}
-}
+}*/

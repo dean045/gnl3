@@ -21,7 +21,7 @@ int main()
 	char *test;
 	int		r = 0;
 
-	fd = open("brams42.txt", O_RDONLY);
+	fd = open("bible.txt", O_RDONLY);
 	while ((test = get_next_line(fd)) != NULL)
 	{
 		printf("%s", test);
