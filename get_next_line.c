@@ -6,7 +6,7 @@
 /*   By: brhajji- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 18:56:01 by brhajji-          #+#    #+#             */
-/*   Updated: 2021/12/07 20:07:54 by brhajji-         ###   ########.fr       */
+/*   Updated: 2021/12/07 20:20:35 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_get_n(char *tmp)
 	int	i;
 
 	i = 0;
-	if (!tmp)
+	if (!tmp || !*tmp)
 		return (-1);
 	while (tmp[i])
 	{
@@ -80,7 +80,7 @@ char	*ft_join(char *tmp, char *buf)
 		return (NULL);
 	i = -1;
 	new[len1 + len2] = '\0';
-	while (++i < len1 && i < len2 )
+	while (++i < len1 || i < len2 )
 	{
 		if (i < len1 && tmp[len1 - i - 1])
 			new[len1 - i - 1] = tmp[len1 - i - 1];
@@ -97,6 +97,8 @@ char	*ft_substr(char *tmp, int end)
 
 	if (!tmp)
 		return (NULL);
+	if (end >= ft_strlen(tmp))
+		return (NULL);
 	new = malloc(sizeof(char) * (end + 1));
 	if (!new)
 		return (NULL);
@@ -104,7 +106,6 @@ char	*ft_substr(char *tmp, int end)
 	while (++i < end)
 		new[i] = tmp[i];
 	new[i] = '\0';
-	free(tmp);
 	return (new);
 }
 
@@ -132,9 +133,9 @@ char *get_next_line(int fd)
 			break;
 	}
 	result = ft_substr(tmp, ft_get_n(tmp));
-	tmp2 = tmp;
-	tmp = ft_strdup(tmp + ft_get_n(tmp) + 1);
-	free(tmp2);
+	tmp2 = ft_strdup(tmp + ft_get_n(tmp) + 1);
+	free(tmp);
+	tmp = tmp2;
 	return(result);
 }
 
