@@ -6,18 +6,34 @@
 /*   By: brhajji- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 18:56:01 by brhajji-          #+#    #+#             */
-/*   Updated: 2021/12/08 14:24:07 by brhajji-         ###   ########.fr       */
+/*   Updated: 2021/12/08 16:47:12 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char *get_next_line(int fd)
+char	*ft_nul(char *tmp)
 {
-	static char *tmp;
+	free(tmp);
+	return (NULL);
+}
+
+int	r_buf(char *buf, int fd)
+{
+	int	ret;
+
+	ret = read(fd, buf, BUFFER_SIZE);
+	if (ret == -1)
+		return (-1);
+	buf[ret] = '\0';
+	return (ret);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*tmp;
 	char		*buf;
 	char		*result;
-	int			ret;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -26,37 +42,17 @@ char *get_next_line(int fd)
 		return (NULL);
 	while (!tmp || ft_get_n(tmp) <= 0 || ft_get_n(tmp) == ft_strlen(tmp))
 	{
-		ret = read(fd, buf, BUFFER_SIZE);
-		if (ret == -1)
-			return (NULL);
-		buf[ret]= '\0';
+		if (r_buf(buf, fd) == -1)
+			return (ft_nul(buf));
 		tmp = ft_join(tmp, buf);
-		if (ret < BUFFER_SIZE)
-			break;
+		if (ft_strlen(buf) < BUFFER_SIZE)
+			break ;
 	}
 	free(buf);
 	result = ft_substr(tmp, ft_get_n(tmp));
-	if (tmp && ft_strlen(tmp + ft_get_n(tmp)) > 1)
-		tmp = ft_strdup(tmp + ft_get_n(tmp) + 1, 1);
+	if (tmp && ft_strlen(tmp) > ft_get_n(tmp) + 1)
+		tmp = ft_strdup(tmp, tmp + ft_get_n(tmp) + 1, 1);
 	else if (tmp)
-	{
-		free(tmp);
-		tmp = NULL;
-	}
-	return(result);
+		tmp = ft_nul(tmp);
+	return (result);
 }
-/*
-int main()
-{
-	int		fd;
-	char *test;
-	int		r = 0;
-
-	fd = open("42_no_nl", O_RDONLY);
-	while ((test = get_next_line(fd)))
-	{
-		printf("%s", test);
-		free(test);
-		r++;
-	}
-}*/

@@ -6,7 +6,7 @@
 /*   By: brhajji- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 14:15:26 by brhajji-          #+#    #+#             */
-/*   Updated: 2021/12/08 14:20:23 by brhajji-         ###   ########.fr       */
+/*   Updated: 2021/12/08 16:34:03 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include"get_next_line.h"
@@ -39,13 +39,13 @@ int	ft_get_n(char *tmp)
 	return (i);
 }
 
-char	*ft_strdup(char *str, int fr)
+char	*ft_strdup(char *tmp, char *str, int fr)
 {
 	int		i;
 	char	*new;
 
 	if (!str || !*str)
-		return (NULL);
+		return (ft_nul(tmp));
 	i = -1;
 	new = malloc(sizeof(char) * (ft_strlen(str) + 1));
 	if (!new)
@@ -54,7 +54,7 @@ char	*ft_strdup(char *str, int fr)
 		new[i] = str[i];
 	new[i] = '\0';
 	if (fr == 1)
-		free(str);
+		tmp = ft_nul(tmp);
 	return (new);
 }
 
@@ -74,14 +74,14 @@ char	*ft_join(char *tmp, char *buf)
 		return (NULL);
 	i = -1;
 	new[len1 + len2] = '\0';
-	while (++i < len1 || i < len2 )
+	while (++i < len1 || i < len2)
 	{
 		if (i < len1 && tmp[len1 - i - 1])
 			new[len1 - i - 1] = tmp[len1 - i - 1];
 		if (i < len2 && buf[len2 - i - 1])
 			new[len1 + len2 - i - 1] = buf[len2 - i - 1];
 	}
-	free(tmp);
+	tmp = ft_nul(tmp);
 	return (new);
 }
 
